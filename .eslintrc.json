@@ -2,7 +2,8 @@
   "root": true,
   "extends": [
     "eslint:recommended",
-    "plugin:solid/recommended"
+    "plugin:solid/recommended",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
