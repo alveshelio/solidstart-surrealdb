@@ -1,25 +1,25 @@
-import { A } from 'solid-start';
+import { Switch, Match, For, createEffect } from 'solid-js';
+import { useAllStickies } from '~/hooks/useAllStickies';
 
 export default function Home() {
+  const { query } = useAllStickies();
+
+  createEffect(() => {
+    console.log('data___', query);
+  });
+
   return (
     <>
-      <header class="flex justify-center items-center text-white my-5 mx-auto bg-blue-500  w-full lg:w-[75%] p-4 text-lg ">
-        SolidStart - Tanstack Query - Tailwind CSS - CSS Modules Kit
-      </header>
-      <div class="flex flex-col gap-2 items-center text-blue-800 underline text-base">
-        <A
-          href="/counter"
-          class="hover:text-blue-500 transition-colors delay-100"
-        >
-          See Counter example component
-        </A>
-        <A
-          href="/api-example"
-          class="hover:text-blue-500 transition-colors delay-100"
-        >
-          See API example component
-        </A>
-      </div>
+      <Switch>
+        <Match when={query.isLoading}>Loading...</Match>
+        <Match when={query.isError}>Error: {query.error?.message}</Match>
+        <Match when={query.isSuccess}>
+          <h1>Stickies</h1>
+          <For each={query.data}>
+            {(sticky) => <div>Content: {sticky.content}</div>}
+          </For>
+        </Match>
+      </Switch>
     </>
   );
 }
