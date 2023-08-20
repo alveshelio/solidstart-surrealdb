@@ -1,9 +1,10 @@
 import { json } from 'solid-start/api';
 
-import { db } from '~/lib/surrealdb';
+import { SurrealInstance } from '~/lib/surrealdb';
+import { Sticky } from '~/models/sticky';
 
 export async function GET() {
-  const stickies = await db.select('sticky');
+  const stickies = await SurrealInstance.select<Sticky>('sticky');
 
   return json(stickies, 200);
 }

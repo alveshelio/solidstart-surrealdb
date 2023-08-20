@@ -2,7 +2,9 @@ import axios, { AxiosResponse } from 'axios';
 import { Sticky } from '~/models/sticky';
 
 export const fetchStickies = async () => {
-  const response = await axios.get<Sticky[]>('/api/stickies/all');
+  const response = await axios.get<Sticky[]>(
+    'http://localhost:3000/api/stickies/all'
+  );
 
   return response.data;
 };
@@ -15,7 +17,7 @@ export const createSticky = async (data: CreateStickyInput) => {
     Sticky,
     AxiosResponse<Sticky>,
     CreateStickyInput
-  >('/api/stickies/new', data);
+  >('http://localhost:3000/api/stickies/new', data);
   return response.data;
 };
 

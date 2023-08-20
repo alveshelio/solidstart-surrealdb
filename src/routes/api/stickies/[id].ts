@@ -1,6 +1,6 @@
 import { APIEvent, json } from 'solid-start/api';
 
-import { db } from '~/lib/surrealdb';
+import { SurrealInstance } from '~/lib/surrealdb';
 import { Sticky } from '~/models/sticky';
 
 export async function PUT({ request, params }: APIEvent) {
@@ -15,18 +15,19 @@ export async function PUT({ request, params }: APIEvent) {
     return json({ error: 'Content is missing' }, 400);
   }
 
-  const existingSticky = await db.select<Sticky>(id);
+  const existingSticky = await SurrealInstance.select<Sticky>(id);
 
   if (!existingSticky.length) {
     return json({ message: 'Sticky not found' }, 404);
   }
 
-  const response = await db.merge(id, {
+  const response = await SurrealInstance.change<Sticky>(id, {
+    ...existingSticky[0],
     updatedAt: new Date(),
     content: body.content,
   });
 
-  return json({ sticky: response[0] }, 200);
+  return json({ sticky: response }, 200);
 }
 
 export async function DELETE({ params }: APIEvent) {
@@ -36,15 +37,16 @@ export async function DELETE({ params }: APIEvent) {
     return new Response('Id is missing', { status: 400 });
   }
 
-  const existingSticky = await db.select<Sticky>(id);
+  const existingSticky = await SurrealInstance.select<Sticky>(id);
 
   if (!existingSticky.length) {
     return json({ message: 'Sticky not found' }, 404);
   }
 
-  const result = await db.delete(id);
-
-  return result.length
-    ? json({ success: true, error: null }, 200)
-    : json({ success: false, error: 'Failed to delete' }, 500);
+  try {
+    await SurrealInstance.delete(id);
+    return json({ success: true, error: null }, 200);
+  } catch (error) {
+    return json({ success: false, error: 'Failed to delete' }, 500);
+  }
 }

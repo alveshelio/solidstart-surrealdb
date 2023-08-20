@@ -1,6 +1,6 @@
 export type Sticky = {
   id: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

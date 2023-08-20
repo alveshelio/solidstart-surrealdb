@@ -1,25 +1,24 @@
-import { Switch, Match, For, createEffect } from 'solid-js';
-import { useAllStickies } from '~/hooks/useAllStickies';
+import { useRouteData } from 'solid-start';
+import { For, createResource } from 'solid-js';
+import { fetchStickies } from '~/services/stickies';
+
+export function routeData() {
+  const [stickies] = createResource(async () => await fetchStickies());
+
+  return { stickies };
+}
 
 export default function Home() {
-  const { query } = useAllStickies();
-
-  createEffect(() => {
-    console.log('data___', query);
-  });
+  const { stickies } = useRouteData<typeof routeData>();
 
   return (
-    <>
-      <Switch>
-        <Match when={query.isLoading}>Loading...</Match>
-        <Match when={query.isError}>Error: {query.error?.message}</Match>
-        <Match when={query.isSuccess}>
-          <h1>Stickies</h1>
-          <For each={query.data}>
-            {(sticky) => <div>Content: {sticky.content}</div>}
-          </For>
-        </Match>
-      </Switch>
-    </>
+    <div>
+      <h1>Stickies</h1>
+      <ul>
+        <For each={stickies()}>
+          {(sticky) => <li>Content: {sticky.content}</li>}
+        </For>
+      </ul>
+    </div>
   );
 }

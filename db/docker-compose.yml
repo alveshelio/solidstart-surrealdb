@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  surrealdb:
+    container_name: surrealdb
+    restart: on-failure
+    volumes:
+      - ./data:/data
+    env_file:
+      - .env
+    entrypoint:
+      - /surreal
+      - start
+      - --log
+      - trace
+      - --user
+      - $DB_USER
+      - --pass
+      - $DB_PASSWORD
+      - file:/data/liquiditly.db
+    image: surrealdb/surrealdb:latest
+    ports:
+      - 80:8000

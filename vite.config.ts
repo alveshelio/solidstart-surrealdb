@@ -1,15 +1,15 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 
-import solid from "solid-start/vite";
-import { defineConfig } from "vite";
+import solid from 'solid-start/vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [solid()],
   server: {
     hmr: {
-      overlay: false
-    }
+      overlay: false,
+    },
   },
   test: {
     globals: true,
@@ -18,9 +18,9 @@ export default defineConfig({
       web: [/.[jt]sx?/],
     },
     deps: {
-        inline: [/solid-start/, /solid-testing-library/],
-      },
+      inline: [/solid-start/, /solid-testing-library/],
     },
+  },
   resolve: {
     conditions: ['development', 'browser'],
   },
