@@ -3,9 +3,10 @@
 
 import solid from 'solid-start/vite';
 import { defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [solid()],
+  plugins: [solid(), tsconfigPaths()],
   server: {
     hmr: {
       overlay: false,
@@ -14,14 +15,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    transformMode: {
-      web: [/.[jt]sx?/],
-    },
+    // transformMode: {
+    //   web: [/.[jt]sx?/],
+    // },
     deps: {
       inline: [/solid-start/, /solid-testing-library/],
     },
-  },
-  resolve: {
-    conditions: ['development', 'browser'],
   },
 });

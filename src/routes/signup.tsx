@@ -1,18 +1,21 @@
 import { createServerAction$ } from 'solid-start/server';
+import { createSignal, JSX } from 'solid-js';
+import axios from 'axios';
 import { FormData } from 'undici';
 import { storeToken } from '~/lib/session.server';
 import { SurrealInstance } from '~/lib/surrealdb';
 
-export default function SignInPage() {
-  const [signingIn, { Form }] = createServerAction$(
+export default function SignUpPage() {
+  const [signingUn, { Form }] = createServerAction$(
     async (form: FormData, { request }) => {
       const email = form.get('email') as string;
       const password = form.get('password') as string;
       try {
-        const token = await SurrealInstance.signin({
+        const token = await SurrealInstance.signup({
           NS: 'liquiditly',
           DB: 'liquiditly',
           SC: 'user',
+          name: 'Helio',
           user: email,
           pass: password,
         });
@@ -40,8 +43,8 @@ export default function SignInPage() {
           Password:
           <input type="password" name="password" />
         </label>
-        <button type="submit" disabled={signingIn.pending}>
-          Sign In
+        <button type="submit" disabled={signingUn.pending}>
+          Sign Up
         </button>
       </Form>
     </div>

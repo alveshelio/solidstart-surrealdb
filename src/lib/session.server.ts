@@ -6,7 +6,8 @@ import { User } from '~/models/user';
 import { fetchUser } from '~/services/user';
 
 export async function login({
-  email: password,
+  email,
+  password,
 }: {
   email: string;
   password: string;
@@ -110,7 +111,7 @@ export async function getToken() {
 
   console.warn('token in getToken', token);
   if (!token) {
-    return null;
+    redirect('/login');
   }
 
   return token;
