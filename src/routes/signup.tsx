@@ -15,7 +15,7 @@ export default function SignUpPage() {
           NS: 'liquiditly',
           DB: 'liquiditly',
           SC: 'user',
-          name: 'Helio',
+          name: 'Test User',
           user: email,
           pass: password,
         });

@@ -16,7 +16,7 @@ DEFINE FIELD permissions.* ON user TYPE record(permission);
 
 DEFINE INDEX uniqueEmail ON user COLUMNS email UNIQUE;
 
-DEFINE SCOPE userScope
+DEFINE SCOPE user
     SESSION 24h
     SIGNUP (
         CREATE user
@@ -30,4 +30,16 @@ DEFINE SCOPE userScope
         SELECT *
         FROM user
         WHERE email = $email AND crypto::argon2::compare(password, $password)
+    );
+
+DEFINE SCOPE user SESSION 1d
+    SIGNIN (
+        SELECT * FROM user WHERE email = $email AND crypto::argon2::compare(password, $password)
+    )
+    SIGNUP (
+        CREATE user CONTENT {
+            name: $name,
+            email: $email,
+            password: crypto::argon2::generate($password)
+        }
     );

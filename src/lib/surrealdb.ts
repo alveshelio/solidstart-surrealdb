@@ -19,7 +19,7 @@ import { Surreal } from 'surrealdb.js';
 // });
 
 // export { SurrealInstance };
-export const SurrealInstance = new Surreal('http://localhost:8000', {
+export const SurrealInstance = new Surreal('ws://localhost:8000/rpc', {
   ns: 'liquiditly',
   db: 'liquiditly',
   auth: {
