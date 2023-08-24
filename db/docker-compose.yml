@@ -20,4 +20,4 @@ services:
       - file:/data/liquiditly.db
     image: surrealdb/surrealdb:latest
     ports:
-      - 80:8000
+      - 8000:8000
